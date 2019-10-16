@@ -3,8 +3,8 @@ let app = require('http').createServer(handler);
 let io = require('socket.io')(app);
 let fs = require('fs');
 let ip = require('ip');
-app.listen(3000);
-console.log("Server nodejs chay tai dia chi: " + ip.address() + ":" + 3000)
+app.listen(80);
+console.log("Server nodejs chay tai dia chi: " + ip.address() + ":" + 80)
 
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
