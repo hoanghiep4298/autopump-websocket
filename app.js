@@ -1,10 +1,10 @@
-var util  = require('util');
-var app = require('http').createServer();
-var io = require('socket.io')(app);
-var fs = require('fs');
+let util  = require('util');
+let app = require('http').createServer(handler);
+let io = require('socket.io')(app);
+let fs = require('fs');
 let ip = require('ip');
-app.listen(80);
-console.log("Server nodejs chay tai dia chi: " + ip.address() + ":" + 80)
+app.listen(3000);
+console.log("Server nodejs chay tai dia chi: " + ip.address() + ":" + 3000)
 
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
@@ -13,7 +13,6 @@ function handler (req, res) {
       res.writeHead(500);
       return res.end('Error loading index.html');
     }
-
     res.writeHead(200);
     res.end(data);
   });
@@ -29,7 +28,8 @@ function sendTime() {
     io.sockets.emit('atime', { time: new Date().toJSON() });
 }
 io.on('connection', function (socket) {
-	console.log("Connected");
+  console.log("Connected");
+  
     socket.emit('welcome', { message: 'Connected !!!!' });
     socket.on('connection', function (data) {
         console.log(data);   
@@ -43,15 +43,15 @@ io.on('connection', function (socket) {
         // }
     })
   
-    socket.on('atime', function (data) {
-	  sendTime();
-    console.log(data);
+    socket.on('tester', function (data) {
+	  
+      console.log(data.message);
     });
 
     socket.on('JSON', function (data) {
 
-	    var jsonStr = JSON.stringify(data);
-        var parsed = ParseJson(jsonStr);
+	    let jsonStr = JSON.stringify(data);
+        let parsed = ParseJson(jsonStr);
         
     });
     
