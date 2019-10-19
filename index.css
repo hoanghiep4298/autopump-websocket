@@ -1,0 +1,28 @@
+.buttons {
+    height: 100px;
+    width: 250px;
+    border: solid;
+}
+.part1 {
+    height: 50%;
+}
+.part2 {
+    display: flex;
+    align-content: stretch;
+    height: 50%;
+}
+#auto {
+    
+    width: 100%;
+    height: 100%;
+}
+#on {
+    
+    width: 50%;
+    height: 100%;
+}
+
+#off {
+    width: 50%;
+    height: 100%;
+}

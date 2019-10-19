@@ -3,8 +3,8 @@ let app = require('http').createServer(handler);
 let io = require('socket.io')(app);
 let fs = require('fs');
 let ip = require('ip');
-app.listen(80);
-console.log("Server nodejs chay tai dia chi: " + ip.address() + ":" + 80)
+app.listen(3000);
+console.log("Server nodejs chay tai dia chi: " + ip.address() + ":" + 3000)
 
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
@@ -24,23 +24,23 @@ function ParseJson(jsondata) {
         return null;
     }
 }
-function sendTime() {
-    io.sockets.emit('atime', { time: new Date().toJSON() });
-}
-io.on('connection', function (socket) {
-  console.log("Connected");
-  
-    socket.emit('welcome', { message: 'Connected !!!!' });
+// ==============================================================
+let arduinoConnected = false;
+//===============================================================
+io.on('connection', function (socket) { 
+  console.log("someone connected");
+  socket.emit('init', { message: 'Connect to server successfully' });
+  //=======================web browser===========================
+
+
+  //======================= Arduino ============================
     socket.on('connection', function (data) {
-        console.log(data);   
+        console.log(data.message);   
     });
 
-    socket.on('updatelevel', function(level){
-        console.log("current level: ", level);
-        //neu level chia het cho 5 thì emit ring!!!
-        // if(parseInt(level) === 10){
-        //     socket.emit("ring", { status : 1 })
-        // }
+    socket.on('updateStatus', function(JSONdata){
+      console.log(JSONdata.statusOfPump, JSONdata.autoMode);
+      io.sockets.emit('updateToBrowser', JSONdata);
     })
   
     socket.on('tester', function (data) {
