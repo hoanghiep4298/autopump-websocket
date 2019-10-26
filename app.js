@@ -1,10 +1,29 @@
 let util  = require('util');
-let app = require('http').createServer(handler);
-let io = require('socket.io')(app);
 let fs = require('fs');
-let ip = require('ip');
-app.listen(3000);
-console.log("Server nodejs chay tai dia chi: " + ip.address() + ":" + 3000)
+let options = {
+  key: fs.readFileSync('ssl/private.key'),
+  cert: fs.readFileSync('ssl/certificate.crt'),
+  ca: fs.readFileSync('ssl/ca_bundle.crt')
+}
+// let app = require('http').createServer(handler);
+// let io = require('socket.io')(app);
+const express = require("express");
+let app = express();
+
+app.set("view engine", "pug");
+app.set("views", "./views");
+app.use(express.static(__dirname + '/public'));
+
+let server = require("https").createServer(options, app);
+let io = require("socket.io")(server);
+server.listen(3000);
+
+ console.log("Server nodejs chay tai dia chi: localhost"  + ":" + 3000)
+
+app.get('/', (req,res)=> {
+  console.log('hello');
+  res.render('index')
+});
 
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
