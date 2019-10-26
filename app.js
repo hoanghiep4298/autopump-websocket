@@ -16,9 +16,9 @@ app.use(express.static(__dirname + '/public'));
 
 let server = require("https").createServer(options, app);
 let io = require("socket.io")(server);
-server.listen(3000);
+server.listen(443);
 
- console.log("Server nodejs chay tai dia chi: localhost"  + ":" + 3000)
+ console.log("Server nodejs chay tai dia chi: localhost"  + ":" + 443)
 
 app.get('/', (req,res)=> {
   console.log('hello');
