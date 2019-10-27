@@ -1,5 +1,6 @@
 let util  = require('util');
 let fs = require('fs');
+const cors = require('cors');
 let options = {
   key: fs.readFileSync('ssl/private.key'),
   cert: fs.readFileSync('ssl/certificate.crt'),
@@ -9,9 +10,17 @@ let options = {
 // let io = require('socket.io')(app);
 const express = require("express");
 let app = express();
-
+app.use(cors({credentials: true, origin: true}))
 app.set("view engine", "pug");
 app.set("views", "./views");
+
+app.use(function(req, res, next) {
+    if (req.secure) {
+        next();
+    } else {
+        res.redirect('https://' + req.headers.host + req.url);
+    }
+});
 app.use(express.static(__dirname + '/public'));
 
 let server = require("https").createServer(options, app);
@@ -24,6 +33,7 @@ app.get('/', (req,res)=> {
   console.log('hello');
   res.render('index')
 });
+
 
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
