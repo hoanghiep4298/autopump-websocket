@@ -8,11 +8,11 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 app.use(express.static(__dirname + '/public'));
 
-let server = require("https").createServer(options, app);
+let server = require("http").createServer(app);
 let io = require("socket.io")(server);
 server.listen(80);
 
- console.log("Server nodejs chay tai dia chi: localhost"  + ":" + 80)
+ console.log("Server nodejs running...")
 
 app.get('/', (req,res)=> {
   console.log('hello');
