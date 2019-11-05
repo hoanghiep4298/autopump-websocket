@@ -1,28 +1,35 @@
-.buttons {
-    height: 100px;
-    width: 250px;
-    border: solid;
-}
-.part1 {
-    height: 50%;
-}
-.part2 {
+body{
     display: flex;
-    align-content: stretch;
-    height: 50%;
-}
-#auto {
-    
-    width: 100%;
-    height: 100%;
-}
-#on {
-    
-    width: 50%;
-    height: 100%;
+    justify-content: center;
 }
 
-#off {
-    width: 50%;
-    height: 100%;
+.container {
+    width: 500px;
+    height: 300px;
+    border: 1px solid #eee;
+}
+
+.message {
+    border: 1px solid #eee;
+}
+
+#messages {
+    text-align: center;
+}
+.mode {
+    margin: 40px 20px;
+    
+}
+.mode-name{
+    text-align: center;
+}
+
+.button-control{
+    display: flex;
+    justify-content: space-around;
+}
+.button {
+    width: 220px;
+    height: 40px;
+    
 }

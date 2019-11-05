@@ -1,32 +1,57 @@
 doctype html
-head
-  title Socket.IO chat
-  <script src="http://104.215.198.148/socket.io/socket.io.js"></script>
-  //script(src='https://localhost:3000/socket.io/socket.io.js')
-  //script(src='http://code.jquery.com/jquery-1.11.1.js')
-  link(rel='stylesheet' href='index.css')
-p#messages
-script.
-  //var socket = io();
-  let currentMode;
-  let connectionOptions = {
-  "force new connection": true,
-  "reconnectionAttempts": "infinity",
-  "timeout": 10000,
-  "transports": ["websocket"]
-  };
-  const socket = io.connect('http://104.215.198.148', connectionOptions);
-  //const socket = io.connect('https://localhost:3000', connectionOptions);
-  socket.emit("connection", { message: "I'm Browser"});
-  socket.on('init', function(data){
-  document.getElementById('messages').innerHTML = data.message;
-  });
-  socket.on('updateToBrowser', function(data){
-  console.log(data);
-  })
-.buttons
-  .part1
-    button#auto(name='autoPump') Auto Pump
-  .part2
-    button#on(name='on') Turn on
-    button#off(name='off') Turn off
+html
+  head
+    title Socket.IO chat
+    //<script src="http://104.215.198.148/socket.io/socket.io.js"></script>
+    script(src='/socket.io/socket.io.js')
+    script(src='http://code.jquery.com/jquery-1.11.1.js')
+    //link(rel='stylesheet' href='index.css')
+    style
+      include index.css
+  
+  body
+
+    script.
+      var socket = io();
+      let currentMode;
+      let connectionOptions = {
+        "force new connection": true,
+        "reconnectionAttempts": "infinity",
+        "timeout": 10000,
+        "transports": ["websocket"]
+      };
+  
+      //const socket = io.connect('http://104.215.198.148', connectionOptions);
+      //const socket = io.connect('http://localhost', connectionOptions);
+      socket.emit("connection", { message: "I'm Browser"});
+      socket.on('init', function(data){
+        document.getElementById('messages').innerHTML = data.message;
+      });
+      socket.on('updateToBrowser', function(data){
+        console.log(data);
+      })
+
+      function switchAutoModeState(state){
+        //console.log(`include ok ${state}`)
+        socket.emit('switchAutoModeState', { state: state })
+      }
+    //- script
+    //-   include control.js
+
+    .container
+      .overlay
+        .message
+          p#messages
+        .dashboard
+          .mode
+            h4.mode-name Automatic Mode
+            .button-control
+              button(class='button' type='button' onclick='switchAutoModeState("on")') TURN ON
+              button(class='button' type='button' onclick='switchAutoModeState("off")') TURN OFF
+          .mode
+            h4.mode-name Manual Mode
+            .button-control
+              button.button TURN ON
+              button.button TURN OFF
+
+

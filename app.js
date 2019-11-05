@@ -11,49 +11,36 @@ app.use(express.static(__dirname + '/public'));
 let server = require("http").createServer(app);
 let io = require("socket.io")(server);
 server.listen(80);
-
- console.log("Server nodejs running...")
+console.log("Server nodejs running...")
 
 app.get('/', (req,res)=> {
-  console.log('hello');
   res.render('index')
 });
 
-function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-    res.writeHead(200);
-    res.end(data);
-  });
-}
-function ParseJson(jsondata) {
-    try {
-        return JSON.parse(jsondata);
-    } catch (error) {
-        return null;
-    }
-}
+
 // ==============================================================
 let arduinoConnected = false;
+let autoModeState = "off";
 //===============================================================
 io.on('connection', function (socket) { 
-  console.log("someone connected");
+  console.log("someone connecting...");
   socket.emit('init', { message: 'Connect to server successfully' });
-  //=======================web browser===========================
+  socket.on('connection', function (data) {
+    console.log(data.message);   
+  });
 
+  //=======================web browser===========================
+  socket.on('switchAutoModeState', function(state){
+    autoModeState = state;
+    console.log(`switchAutoModeState ${state}`)
+    io.sockets.emit('switchAutoModeState', { state: state } );
+  })
 
   //======================= Arduino ============================
-    socket.on('connection', function (data) {
-        console.log(data.message);   
-    });
-
+    
     socket.on('updateStatus', function(JSONdata){
-      console.log(JSONdata.statusOfPump, JSONdata.autoMode);
-      io.sockets.emit('updateToBrowser', JSONdata);
+      console.log(JSONdata.statusOfPump, JSONdata.autoModeState);
+      //io.sockets.emit('updateToBrowser', JSONdata);
     })
   
     socket.on('tester', function (data) {
@@ -73,3 +60,28 @@ io.on('connection', function (socket) {
     
   });
 });
+
+
+
+//==============================
+
+
+function ParseJson(jsondata) {
+  try {
+      return JSON.parse(jsondata);
+  } catch (error) {
+      return null;
+  }
+}
+
+function handler (req, res) {
+  fs.readFile(__dirname + '/index.html',
+  function (err, data) {
+    if (err) {
+      res.writeHead(500);
+      return res.end('Error loading index.html');
+    }
+    res.writeHead(200);
+    res.end(data);
+  });
+}
