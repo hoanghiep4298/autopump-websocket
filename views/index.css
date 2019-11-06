@@ -1,35 +1,82 @@
 body{
     display: flex;
     justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font: 1em sans-serif;
+    
 }
-
+.text-white {
+    color: white;
+}
 .container {
-    width: 500px;
-    height: 300px;
-    border: 1px solid #eee;
-}
+    /* width: 500px;
+    height: 300px; */
 
+    background-image: url("https://www.wallpaperup.com/uploads/wallpapers/2014/10/16/484482/1a12444d28306e9c14fc8503da452d17.jpg");
+    background-size: cover;
+    border: 2px solid black;
+}
+.overlay {
+    height: 100%;
+    /* background-color: rgba(0, 0, 0, 0.6); */
+    background: linear-gradient(180deg, rgba(3,75,187,1) 0%, rgba(135,212,255,0.2) 64%);
+}
+.dashboard{
+    margin: 20px;
+    padding: 20px;
+    position: relative;
+}   
+.mode {
+    margin-bottom: 20px;
+    position: relative;
+    bottom: 10px;
+  
+    background-color: rgba(20, 60, 85, 0.8);
+ }
+ 
 .message {
-    border: 1px solid #eee;
+    border: 1px solid;
 }
 
 #messages {
     text-align: center;
 }
-.mode {
-    margin: 40px 20px;
+
+.state {
+    display: flex;
+    position: relative;
     
 }
-.mode-name{
+.state-name{
     text-align: center;
+    width: 50%;
 }
-
+.state-align {
+    width: 50%;
+    text-align: center;
+    text-transform: uppercase;
+}
 .button-control{
     display: flex;
-    justify-content: space-around;
-}
-.button {
-    width: 220px;
-    height: 40px;
     
+}
+
+.button {
+    width: 200px;
+    height: 40px;
+    margin: 5px;
+    
+    box-shadow: rgb(245, 151, 142) 0px 1px 0px 0px inset;
+    background: linear-gradient(rgb(242, 69, 55) 5%, rgb(198, 45, 31) 100%) rgb(242, 69, 55);
+    border-radius: 6px;
+    border: 1px solid rgb(208, 39, 24);
+    display: inline-block;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    font-family: Arial;
+    /* font-size: 15px; */
+    font-weight: bold;
+    padding: 6px 24px;
+    text-decoration: none;
+    text-shadow: rgb(129, 14, 5) 0px 1px 0px;
 }

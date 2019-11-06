@@ -18,10 +18,12 @@ app.get('/', (req,res)=> {
 });
 
 
-// ==============================================================
+// ===========================STATE VARIABLE===================================
 let arduinoConnected = false;
-let autoModeState = "off";
-//===============================================================
+let autoModeState = "on";
+let pumpState = "off"
+
+//============================HANDLE CONNECTION================================
 io.on('connection', function (socket) { 
   console.log("someone connecting...");
   socket.emit('init', { message: 'Connect to server successfully' });
@@ -29,17 +31,20 @@ io.on('connection', function (socket) {
     console.log(data.message);   
   });
 
-  //=======================web browser===========================
+  //=======================FROM web browser===========================
   socket.on('switchAutoModeState', function(state){
     autoModeState = state;
-    console.log(`switchAutoModeState ${state}`)
     io.sockets.emit('switchAutoModeState', { state: state } );
   })
 
-  //======================= Arduino ============================
+  socket.on('switchPumpState', function(state){
+    pumpState = state;
+    io.sockets.emit('switchPumpState', { state: state })
+  })
+  //=======================FROM Arduino ============================
     
     socket.on('updateStatus', function(JSONdata){
-      console.log(JSONdata.statusOfPump, JSONdata.autoModeState);
+      //console.log(JSONdata.statusOfPump, JSONdata.autoModeState);
       //io.sockets.emit('updateToBrowser', JSONdata);
     })
   

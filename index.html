@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <p id="messages"></p> 
+    <p id="messages">Connecting to server...</p> 
     <script>
         var socket = io();
         let currentMode;
@@ -20,7 +20,7 @@
         };
         // const socket = io.connect('http://104.215.198.148', connectionOptions);
         const socket = io.connect('http://localhost:3000', connectionOptions);
-        socket.emit("connection", { message: "I'm Browser"});
+        socket.emit("connection", { message: "I'm Browser"});   
 
         socket.on('init', function(data){
             document.getElementById('messages').innerHTML = data.message;

@@ -3,7 +3,7 @@ html
   head
     title Socket.IO chat
     //<script src="http://104.215.198.148/socket.io/socket.io.js"></script>
-    script(src='/socket.io/socket.io.js')
+    script(src='http://localhost/socket.io/socket.io.js')
     script(src='http://code.jquery.com/jquery-1.11.1.js')
     //link(rel='stylesheet' href='index.css')
     style
@@ -12,7 +12,7 @@ html
   body
 
     script.
-      var socket = io();
+      //var socket = io();
       let currentMode;
       let connectionOptions = {
         "force new connection": true,
@@ -22,36 +22,41 @@ html
       };
   
       //const socket = io.connect('http://104.215.198.148', connectionOptions);
-      //const socket = io.connect('http://localhost', connectionOptions);
+      const socket = io.connect('http://localhost', connectionOptions);
       socket.emit("connection", { message: "I'm Browser"});
       socket.on('init', function(data){
         document.getElementById('messages').innerHTML = data.message;
       });
       socket.on('updateToBrowser', function(data){
-        console.log(data);
+        //console.log(data);
       })
 
       function switchAutoModeState(state){
-        //console.log(`include ok ${state}`)
         socket.emit('switchAutoModeState', { state: state })
       }
-    //- script
-    //-   include control.js
-
+      function switchPumpState(state) {
+        socket.emit('switchPumpState', { state: state });
+      }
+    
+    
     .container
       .overlay
         .message
-          p#messages
+          p#messages.text-white
         .dashboard
           .mode
-            h4.mode-name Automatic Mode
+            .state
+              p.state-name.text-white Automatic Mode:
+              p#auto-state.state-align.text-white on
             .button-control
-              button(class='button' type='button' onclick='switchAutoModeState("on")') TURN ON
-              button(class='button' type='button' onclick='switchAutoModeState("off")') TURN OFF
+              button(class='button on text-white' type='button' onclick='switchAutoModeState("on")') TURN ON
+              button(class='button off text-white' type='button' onclick='switchAutoModeState("off")') TURN OFF
           .mode
-            h4.mode-name Manual Mode
+            .state
+              p.state-name.text-white State Of Pump:
+              p#pump-state.state-align.text-white off
             .button-control
-              button.button TURN ON
-              button.button TURN OFF
+              button(class='button on ' type='button' onclick='switchPumpState("on")') TURN THE PUMP ON
+              button(class='button off' type='button' onclick='switchPumpState("off")') TURN THE PUMP OFF
 
 
