@@ -44,8 +44,8 @@ io.on('connection', function (socket) {
   //=======================FROM Arduino ============================
     
     socket.on('updateStatus', function(JSONdata){
-      //console.log(JSONdata.statusOfPump, JSONdata.autoModeState);
-      //io.sockets.emit('updateToBrowser', JSONdata);
+      // console.log(JSONdata.stateOfPump, JSONdata.autoModeState);
+      io.sockets.emit('updateToBrowser', JSONdata);
     })
   
     socket.on('tester', function (data) {

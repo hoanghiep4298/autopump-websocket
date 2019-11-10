@@ -2,8 +2,8 @@ doctype html
 html
   head
     title Socket.IO chat
-    //<script src="http://104.215.198.148/socket.io/socket.io.js"></script>
-    script(src='http://localhost/socket.io/socket.io.js')
+    <script src="http://104.215.198.148/socket.io/socket.io.js"></script>
+    //script(src='http://localhost/socket.io/socket.io.js')
     script(src='http://code.jquery.com/jquery-1.11.1.js')
     //link(rel='stylesheet' href='index.css')
     style
@@ -21,14 +21,31 @@ html
         "transports": ["websocket"]
       };
   
-      //const socket = io.connect('http://104.215.198.148', connectionOptions);
-      const socket = io.connect('http://localhost', connectionOptions);
+      const socket = io.connect('http://104.215.198.148', connectionOptions);
+      //const socket = io.connect('http://localhost', connectionOptions);
       socket.emit("connection", { message: "I'm Browser"});
       socket.on('init', function(data){
         document.getElementById('messages').innerHTML = data.message;
       });
-      socket.on('updateToBrowser', function(data){
-        //console.log(data);
+      socket.on('updateToBrowser', function(JSONdata){
+        let stateOfPump = JSONdata.stateOfPump;
+        let autoModeState = JSONdata.autoModeState;
+        console.log(stateOfPump, autoModeState);
+
+        document.getElementById("auto-state").innerHTML = autoModeState;
+        if(autoModeState == "on"){
+          document.getElementById("auto-state").style.color =  "#2df14f";
+        } else {
+          document.getElementById("auto-state").style.color =  "red";
+        }
+
+        document.getElementById("pump-state").innerHTML = stateOfPump;
+        if(stateOfPump == "on"){
+          document.getElementById("pump-state").style.color = "#2df14f";
+        } else {
+          document.getElementById("pump-state").style.color =  "red";
+        }
+
       })
 
       function switchAutoModeState(state){

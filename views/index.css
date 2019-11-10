@@ -12,14 +12,14 @@ body{
     /* width: 500px;
     height: 300px; */
 
-    background-image: url("https://www.wallpaperup.com/uploads/wallpapers/2014/10/16/484482/1a12444d28306e9c14fc8503da452d17.jpg");
+    background-image: url("https://stmed.net/sites/default/files/sunrise-wallpapers-28064-5258581.jpg");
     background-size: cover;
     border: 2px solid black;
 }
 .overlay {
     height: 100%;
     /* background-color: rgba(0, 0, 0, 0.6); */
-    background: linear-gradient(180deg, rgba(3,75,187,1) 0%, rgba(135,212,255,0.2) 64%);
+    background: linear-gradient(180deg, rgb(3, 58, 95) 0%, rgba(136, 136, 133, 0.2) 64%);
 }
 .dashboard{
     margin: 20px;
@@ -67,7 +67,8 @@ body{
     margin: 5px;
     
     box-shadow: rgb(245, 151, 142) 0px 1px 0px 0px inset;
-    background: linear-gradient(rgb(242, 69, 55) 5%, rgb(198, 45, 31) 100%) rgb(242, 69, 55);
+    /* background: linear-gradient(rgb(242, 69, 55) 5%, rgb(198, 45, 31) 100%) rgb(242, 69, 55); */
+    background: red;
     border-radius: 6px;
     border: 1px solid rgb(208, 39, 24);
     display: inline-block;
@@ -79,4 +80,8 @@ body{
     padding: 6px 24px;
     text-decoration: none;
     text-shadow: rgb(129, 14, 5) 0px 1px 0px;
+}
+
+.button:hover, .button:active {
+    background: #ec0000;
 }
