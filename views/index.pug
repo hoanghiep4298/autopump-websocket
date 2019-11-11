@@ -2,8 +2,9 @@ doctype html
 html
   head
     title Socket.IO chat
-    <script src="http://104.215.198.148/socket.io/socket.io.js"></script>
-    //script(src='http://localhost/socket.io/socket.io.js')
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")/
+    //- <script src="http://104.215.198.148/socket.io/socket.io.js"></script>
+    script(src='http://localhost/socket.io/socket.io.js')
     script(src='http://code.jquery.com/jquery-1.11.1.js')
     //link(rel='stylesheet' href='index.css')
     style
@@ -21,8 +22,8 @@ html
         "transports": ["websocket"]
       };
   
-      const socket = io.connect('http://104.215.198.148', connectionOptions);
-      //const socket = io.connect('http://localhost', connectionOptions);
+      //- const socket = io.connect('http://104.215.198.148', connectionOptions);
+      const socket = io.connect('http://localhost', connectionOptions);
       socket.emit("connection", { message: "I'm Browser"});
       socket.on('init', function(data){
         document.getElementById('messages').innerHTML = data.message;
@@ -59,7 +60,7 @@ html
     .container
       .overlay
         .message
-          p#messages.text-white
+          p#messages.text-white Connecting to server...
         .dashboard
           .mode
             .state
@@ -73,7 +74,7 @@ html
               p.state-name.text-white State Of Pump:
               p#pump-state.state-align.text-white off
             .button-control
-              button(class='button on ' type='button' onclick='switchPumpState("on")') TURN THE PUMP ON
-              button(class='button off' type='button' onclick='switchPumpState("off")') TURN THE PUMP OFF
+              button(class='button on ' type='button' onclick='switchPumpState("on")') TURN ON
+              button(class='button off' type='button' onclick='switchPumpState("off")') TURN OFF
 
 
