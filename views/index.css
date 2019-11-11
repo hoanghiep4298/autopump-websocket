@@ -18,26 +18,30 @@ body{
 }
 .overlay {
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     /* background-color: rgba(0, 0, 0, 0.6); */
     background: linear-gradient(180deg, rgb(3, 58, 95) 0%, rgba(136, 136, 133, 0.2) 64%);
 }
 .dashboard{
-    margin: 20px;
+    /* margin: 20px; */
     padding: 20px;
     width: 84%;
     position: relative;
 }   
 .mode {
     width: 100%;
-    height: 50%;
+    height: 45%;
     margin-bottom: 20px;
     position: relative;
-    bottom: 10px;
+    
   
     background-color: rgba(20, 60, 85, 0.8);
  }
  
 .message {
+    width: 100%;
     border: 1px solid;
 }
 
@@ -68,7 +72,7 @@ body{
 
 .button {
     width: 48%;
-    height: 100%;
+    height: 70%;
     margin: 5px;
     
     box-shadow: rgb(245, 151, 142) 0px 1px 0px 0px inset;
