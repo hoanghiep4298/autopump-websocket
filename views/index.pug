@@ -74,12 +74,9 @@ html
       let countDown = function(){ 
         let inputTime = Number(document.getElementById("inputTime").value);
         let reducing = inputTime;
-        console.log("ngoai interval");
         let x = setInterval(function inSeter(){
-          
           reducing = reducing - 1;
           document.getElementById("inputTime").value = reducing;
-          console.log("trong interval");
           if(reducing <= 0 || currentState == "off"){
             clearInterval(x);
             document.getElementById("inputTime").value = inputTime;
