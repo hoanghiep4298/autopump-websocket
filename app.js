@@ -41,6 +41,9 @@ io.on('connection', function (socket) {
     pumpState = state;
     io.sockets.emit('switchPumpState', { state: state })
   })
+  socket.on('setTime', function(pumpingTime){
+    io.sockets.emit('setTime', { pumpingTime: pumpingTime });
+  })
   //=======================FROM Arduino ============================
     
     socket.on('updateStatus', function(JSONdata){

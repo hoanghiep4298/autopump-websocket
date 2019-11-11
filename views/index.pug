@@ -1,10 +1,10 @@
 doctype html
 html
   head
-    title Socket.IO chat
+    title Auto Pump
     meta(name="viewport" content="width=device-width, initial-scale=1.0")/
     script(src="http://104.215.198.148/socket.io/socket.io.js")
-    //script(src='http://localhost/socket.io/socket.io.js')
+    //script(src='/socket.io/socket.io.js')
     script(src='http://code.jquery.com/jquery-1.11.1.js')
     //link(rel='stylesheet' href='index.css')
     style
@@ -15,6 +15,7 @@ html
     script.
       //var socket = io();
       let currentMode;
+      let currentState;
       let connectionOptions = {
         "force new connection": true,
         "reconnectionAttempts": "infinity",
@@ -29,9 +30,16 @@ html
         document.getElementById('messages').innerHTML = data.message;
       });
       socket.on('updateToBrowser', function(JSONdata){
+        console.log(currentState, JSONdata.stateOfPump );
+        if( currentState == "off" && JSONdata.stateOfPump == "on"){
+          let timeSet = Number(document.getElementById("inputTime").value)*1000;
+          setTimeout(countDown(), timeSet);
+        }
         let stateOfPump = JSONdata.stateOfPump;
         let autoModeState = JSONdata.autoModeState;
-        console.log(stateOfPump, autoModeState);
+        
+        currentState = stateOfPump;
+        
 
         document.getElementById("auto-state").innerHTML = autoModeState;
         if(autoModeState == "on"){
@@ -55,8 +63,30 @@ html
       function switchPumpState(state) {
         socket.emit('switchPumpState', { state: state });
       }
-    
-    
+      function setTime(){
+        let inputTime = document.getElementById("inputTime").value;
+        if(inputTime == ""){
+          inputTime = "7";
+        }
+        socket.emit('setTime', { pumpingTime: inputTime });
+      }
+      //--------------------------
+      let countDown = function(){ 
+        let inputTime = Number(document.getElementById("inputTime").value);
+        let reducing = inputTime;
+        console.log("ngoai interval");
+        let x = setInterval(function inSeter(){
+          
+          reducing = reducing - 1;
+          document.getElementById("inputTime").value = reducing;
+          console.log("trong interval");
+          if(reducing <= 0 || currentState == "off"){
+            clearInterval(x);
+            document.getElementById("inputTime").value = inputTime;
+          }
+        }, 1000)
+      };
+
     .container
       .overlay
         .message
@@ -67,7 +97,7 @@ html
               p.state-name.text-white Automatic Mode:
               p#auto-state.state-align.text-white on
             .button-control
-              button(class='button on text-white' type='button' onclick='switchAutoModeState("on")') TURN ON
+              button(class='button on text-white' type='button' onclick='switchAutoModeState("on")' unselectable="on" onselectstart="return false;" onmousedown="return false;") TURN ON
               button(class='button off text-white' type='button' onclick='switchAutoModeState("off")') TURN OFF
           .mode
             .state
@@ -76,5 +106,10 @@ html
             .button-control
               button(class='button on ' type='button' onclick='switchPumpState("on")') TURN ON
               button(class='button off' type='button' onclick='switchPumpState("off")') TURN OFF
-
+          .time-setting
+            p.time-title.state-name.text-white Time: 
+            input(id="inputTime" type="text" value="7")
+            p#second.text-white giây
+            button(class='set-btn' type='button' onclick='setTime()') SET
+            
 
