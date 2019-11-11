@@ -3,8 +3,8 @@ html
   head
     title Socket.IO chat
     meta(name="viewport" content="width=device-width, initial-scale=1.0")/
-    //- <script src="http://104.215.198.148/socket.io/socket.io.js"></script>
-    script(src='http://localhost/socket.io/socket.io.js')
+    script(src="http://104.215.198.148/socket.io/socket.io.js")
+    //script(src='http://localhost/socket.io/socket.io.js')
     script(src='http://code.jquery.com/jquery-1.11.1.js')
     //link(rel='stylesheet' href='index.css')
     style
@@ -22,8 +22,8 @@ html
         "transports": ["websocket"]
       };
   
-      //- const socket = io.connect('http://104.215.198.148', connectionOptions);
-      const socket = io.connect('http://localhost', connectionOptions);
+      const socket = io.connect('http://104.215.198.148', connectionOptions);
+      //const socket = io.connect('http://localhost', connectionOptions);
       socket.emit("connection", { message: "I'm Browser"});
       socket.on('init', function(data){
         document.getElementById('messages').innerHTML = data.message;
