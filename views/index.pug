@@ -36,10 +36,8 @@ html
           setTimeout(countDown(), timeSet);
         }
         let stateOfPump = JSONdata.stateOfPump;
-        let autoModeState = JSONdata.autoModeState;
-        
+        let autoModeState = JSONdata.autoModeState;        
         currentState = stateOfPump;
-        
 
         document.getElementById("auto-state").innerHTML = autoModeState;
         if(autoModeState == "on"){

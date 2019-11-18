@@ -1,5 +1,6 @@
 let util  = require('util');
 let fs = require('fs');
+const firebase = require('firebase-admin');
 
 const express = require("express");
 let app = express();
@@ -12,6 +13,15 @@ let server = require("http").createServer(app);
 let io = require("socket.io")(server);
 server.listen(80);
 console.log("Server nodejs running...")
+
+let serviceAccount = require("./ServiceAccountKey.json")
+firebase.initializeApp({
+  credential: firebase.credential.cert(serviceAccount),
+  databaseURL: "https://auto-pump.firebaseio.com"
+}) 
+let db = firebase.database();
+let uptimeid = fs.readFileSync("uptimeid.txt");
+let downtimeid = fs.readFileSync("downtimeid.txt");
 
 app.get('/', (req,res)=> {
   res.render('index')
@@ -38,9 +48,9 @@ io.on('connection', function (socket) {
   })
 
   socket.on('switchPumpState', function(state){
-    pumpState = state;
     io.sockets.emit('switchPumpState', { state: state })
   })
+
   socket.on('setTime', function(pumpingTime){
     io.sockets.emit('setTime', { pumpingTime: pumpingTime });
   })
@@ -49,47 +59,25 @@ io.on('connection', function (socket) {
     socket.on('updateStatus', function(JSONdata){
       // console.log(JSONdata.stateOfPump, JSONdata.autoModeState);
       io.sockets.emit('updateToBrowser', JSONdata);
+
+      //update firebase db
+      if(JSONdata.stateOfPump == "on" && pumpState == "off"){
+        let refup = db.ref("uptime/"+uptimeid);
+        refup.set({
+          time : new Date().toLocaleString("th-TH")
+        })
+        uptimeid = (1+parseInt(uptimeid)).toString();
+        fs.writeFileSync("uptimeid.txt", uptimeid);
+    
+      } else if(JSONdata.stateOfPump == "off" && pumpState == "on"){
+        let refdown = db.ref("downtime/"+downtimeid);
+        refdown.set({
+          time : new Date().toLocaleString("th-TH")
+        })
+        downtimeid = (1+parseInt(downtimeid)).toString();
+        fs.writeFileSync("downtimeid.txt", downtimeid);
+      }
+      //set new state
+      pumpState = JSONdata.stateOfPump;
     })
-  
-    socket.on('tester', function (data) {
-	  
-      console.log(data.message);
-    });
-
-    socket.on('JSON', function (data) {
-
-	    let jsonStr = JSON.stringify(data);
-        let parsed = ParseJson(jsonStr);
-        
-    });
-    
-  socket.on('arduino', function (data) {
-	  io.sockets.emit('arduino', { message: 'R0' });
-    
-  });
 });
-
-
-
-//==============================
-
-
-function ParseJson(jsondata) {
-  try {
-      return JSON.parse(jsondata);
-  } catch (error) {
-      return null;
-  }
-}
-
-function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-    res.writeHead(200);
-    res.end(data);
-  });
-}
